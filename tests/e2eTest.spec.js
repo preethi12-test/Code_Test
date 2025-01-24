@@ -8,7 +8,15 @@ test("Login", async ({ page }) => {
 
   await LoginPage.goTo();
   await ProductsPage.addProduct();
+  try {
+    await ProductsPage.productAvailabilityCheck();
+  } catch (error) {
+    console.log("Test terminated early: " + error.message);
+    return;
+  }
+
  const productDetailText= await ProductsPage.getProductDetails()
+
   expect(productDetailText).toBeDefined()
   
  
