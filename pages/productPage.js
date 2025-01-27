@@ -20,6 +20,7 @@ export class productsPage {
   }
   async addProduct() {
     await this.product.click();
+    await this.navigateToProductDetails();
   }
   async getProductDetails() {
     return await this.productDetails.textContent();
@@ -35,6 +36,10 @@ export class productsPage {
   async addingProductToCart(){
     await this.addToCartBtn.click();
     return await this.productAddedNotification.textContent();
+  }
+  async navigateToProductDetails() {
+    await this.productDetails.waitFor({ state: 'visible', timeout: 5000 });
+    console.log("Successfully navigated to the product details page.");
   }
   async getCartCount() {
     const currentCountText = await this.cartIcon.textContent(); 
