@@ -6,7 +6,7 @@ export class cartPage {
     this.productQuantity = page.locator(
       `//div[@class='cart__items']/descendant::input[@id='Quantity-1']`
     );
-    this.productPrice = page.locator(`//div[@class='totals']/p`);
+    this.productPrice = page.locator(`//*[@id='main-cart-items']//td[5]//span`);
   }
   async validateCartContents() {
     await this.cartIcon.click();

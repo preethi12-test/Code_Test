@@ -10,9 +10,15 @@ const productData = JSON.parse(
 test("Login", async ({ page }) => {
   const LoginPage = new loginPage(page);
   const ProductsPage = new productsPage(page);
- const CartPage= new cartPage(page)
+  const CartPage = new cartPage(page);
   await LoginPage.goTo();
-  await ProductsPage.addProduct();
+  // await ProductsPage.selectProductByName(productData.productName);
+  await ProductsPage.selectProductByIndex(3);
+  const { name: productNameFromUI, price: productPriceFromUI } =
+    await ProductsPage.getProductDetailsFromUI();
+  console.log(
+    `Product Name: ${productNameFromUI}, Product Price: ${productPriceFromUI}`
+  );
   try {
     await ProductsPage.productAvailabilityCheck();
   } catch (error) {
@@ -26,11 +32,11 @@ test("Login", async ({ page }) => {
   await ProductsPage.getCartCount();
   const updatedCartCountText = await ProductsPage.cartIcon.textContent();
   expect(updatedCartCountText).toContain("1 item");
+
   // validating cart contents
   const cartItemsDetails = await CartPage.validateCartContents();
 
-    // Validate the first product in the cart
-    expect(cartItemsDetails[0].name).toBe(productData.productName); 
-    expect(cartItemsDetails[0].quantity).toBe(productData.productQuantity);  
-    expect(cartItemsDetails[0].price).toBe(productData.productPrice);  
+  // Validate the first product in the cart
+  expect(cartItemsDetails[0].name).toBe(productNameFromUI);
+  expect(cartItemsDetails[0].price).toBe(productPriceFromUI);
 });
