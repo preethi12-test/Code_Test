@@ -35,11 +35,16 @@ test("Login", async ({ page }) => {
   await ProductsPage.getCartCount();
   const updatedCartCountText = await ProductsPage.cartIcon.textContent();
   expect(updatedCartCountText).toContain("1 item");
+  // Navigate to the cart page
+  await ProductsPage.page.locator(`//a[@id='cart-icon-bubble']`).click();
 
-  // validating cart contents
-  const cartItemsDetails = await CartPage.validateCartContents();
-
-  // Validate the first product in the cart
-  expect(cartItemsDetails[0].name).toBe(productNameFromUI);
-  expect(cartItemsDetails[0].price).toBe(productPriceFromUI);
+  // Verify cart page is displayed
+  await CartPage.verifyCartPage();
+  const expectedProductDetails = [
+    {
+      name: productNameFromUI,
+      price: productPriceFromUI,
+    },
+  ];
+  await CartPage.validateCartContents(expectedProductDetails);
 });
