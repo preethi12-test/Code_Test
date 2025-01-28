@@ -12,8 +12,11 @@ test("Login", async ({ page }) => {
   const ProductsPage = new productsPage(page);
   const CartPage = new cartPage(page);
   await LoginPage.goTo();
-  // await ProductsPage.selectProductByName(productData.productName);
-  await ProductsPage.selectProductByIndex(3);
+  // Select product by index
+  await ProductsPage.selectProduct({ byName: false, productIdentifier: 3 });
+
+  // Alternatively, select product by name:
+  // await ProductsPage.selectProduct({ byName: true, productIdentifier: productData.productName });
   const { name: productNameFromUI, price: productPriceFromUI } =
     await ProductsPage.getProductDetailsFromUI();
   console.log(
