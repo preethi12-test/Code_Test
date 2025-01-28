@@ -12,6 +12,7 @@ export class cartPage {
       `//div[@class='cart__items']/descendant::input[@id='Quantity-1']`
     );
     this.productPrice = page.locator(`//*[@id='main-cart-items']//td[5]//span`);
+    this.prooductSize=page.locator(`//div[@class='product-option']/descendant::dd[normalize-space(text()) and contains(text(), 'cm')]`)
   }
 
   // Verify the cart page is displayed
@@ -38,16 +39,19 @@ export class cartPage {
       const itemName = await this.productName.nth(i).textContent();
       const itemQuantity = await this.productQuantity.nth(i).inputValue();
       const itemPrice = await this.productPrice.nth(i).textContent();
+      const itemSize=await this.prooductSize.nth(i).textContent()
       cartItemsDetails.push({
         name: itemName.trim(),
         quantity: parseInt(itemQuantity.trim(), 10),
         price: itemPrice.trim(),
+        size:itemSize.trim().replace(/\D/g, '')
       });
 
       const expectedItem = expectedProductDetails[0];
       expect(itemName.trim()).toBe(expectedItem.name);
       expect(parseInt(itemQuantity.trim(), 10)).toBe(1);
       expect(itemPrice.trim()).toBe(expectedItem.price);
+      expect(itemSize.trim()).toBe(expectedItem.size);
     }
 
     return cartItemsDetails;

@@ -17,10 +17,10 @@ test("Login", async ({ page }) => {
 
   // Alternatively, select product by name:
   // await ProductsPage.selectProduct({ byName: true, productIdentifier: productData.productName });
-  const { name: productNameFromUI, price: productPriceFromUI } =
+  const { name: productNameFromUI, price: productPriceFromUI, size:productSizeFromUI } =
     await ProductsPage.getProductDetailsFromUI();
   console.log(
-    `Product Name: ${productNameFromUI}, Product Price: ${productPriceFromUI}`
+    `Product Name: ${productNameFromUI}, Product Price: ${productPriceFromUI}, Prooduct Size: ${productSizeFromUI}}`
   );
   try {
     await ProductsPage.productAvailabilityCheck();
@@ -44,6 +44,7 @@ test("Login", async ({ page }) => {
     {
       name: productNameFromUI,
       price: productPriceFromUI,
+      size: productSizeFromUI
     },
   ];
   await CartPage.validateCartContents(expectedProductDetails);

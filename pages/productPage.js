@@ -12,6 +12,7 @@ export class productsPage {
     this.productPrice = page.locator(
       `//div[@class='product__info-wrapper grid__item']/descendant::div[@class='price__regular']/span[@class='price-item price-item--regular']`
     );
+    this.productSize=page.locator(`//label[@for='template--15328405717213__main-Size-0']`)
     this.productAvailability = page.locator(
       `//div[@id='price-template--15328405717213__main']/descendant::span[contains(.,'Sold out')]`
     );
@@ -48,9 +49,11 @@ export class productsPage {
   async getProductDetailsFromUI() {
     const productName = await this.productDetails.textContent();
     const productPrice = await this.productPrice.textContent();
+    const productSize=await this.productSize.textContent()
     return {
       name: productName.trim().replace(/\s+/g, " "),
       price: productPrice.trim().replace(/\s+/g, " "),
+      size: productSize.trim()
     };
   }
   async getProductDetails() {
