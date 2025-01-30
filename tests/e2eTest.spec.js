@@ -35,6 +35,7 @@ test("Login", async ({ page }) => {
   await ProductsPage.getCartCount();
   const updatedCartCountText = await ProductsPage.cartIcon.textContent();
   expect(updatedCartCountText).toContain("1 item");
+
   // Navigate to the cart page
   await ProductsPage.page.locator(`//a[@id='cart-icon-bubble']`).click();
 
@@ -48,4 +49,7 @@ test("Login", async ({ page }) => {
     },
   ];
   await CartPage.validateCartContents(expectedProductDetails);
+  //Delete the Product From Cart
+  const cartEmptyConfirmation=await CartPage.deleteProduct()
+  expect(cartEmptyConfirmation).toBeDefined()
 });

@@ -13,6 +13,8 @@ export class cartPage {
     );
     this.productPrice = page.locator(`//*[@id='main-cart-items']//td[5]//span`);
     this.prooductSize=page.locator(`//div[@class='product-option']/descendant::dd[normalize-space(text()) and contains(text(), 'cm')]`)
+    this.deleteBtn=page.locator(`//*[@id='Remove-1']`)
+    this.cartEmptyText=page.locator(`//*[@class='cart__empty-text']`)
   }
 
   // Verify the cart page is displayed
@@ -56,6 +58,10 @@ export class cartPage {
 
     return cartItemsDetails;
   }
-
+async deleteProduct()
+{
+  await this.deleteBtn.click()
+  return this.cartEmptyText.textContent()
+}
 
 }

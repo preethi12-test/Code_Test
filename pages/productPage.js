@@ -1,3 +1,5 @@
+import { cartPage } from "./cartPage";
+
 const productData = JSON.parse(
   JSON.stringify(
     require("/Users/testvagrant/Desktop/CODE_TASK/testData/productData.json")
@@ -9,17 +11,11 @@ export class productsPage {
     this.productDetails = page.locator(
       `//*[@id='ProductInfo-template--15328405717213__main']//h1`
     );
-    this.productPrice = page.locator(
-      `//div[@class='product__info-wrapper grid__item']/descendant::div[@class='price__regular']/span[@class='price-item price-item--regular']`
-    );
+    this.productPrice = page.locator(`//span[@class='price-item price-item--regular']`)
     this.productSize=page.locator(`//label[@for='template--15328405717213__main-Size-0']`)
-    this.productAvailability = page.locator(
-      `//div[@id='price-template--15328405717213__main']/descendant::span[contains(.,'Sold out')]`
-    );
+    this.productAvailability = page.locator(`//span[@class='badge price__badge-sold-out color-inverse']`);
     this.addToCartBtn = page.locator(`//*[@name='add']`);
-    this.productAddedNotification = page.locator(
-      `//*[@id='cart-notification']//h2`
-    );
+    this.productAddedNotification = page.locator(`//*[@id='cart-notification']//h2`);
     this.cartIcon = page.locator(`//*[@class='cart-count-bubble']//span[1]`);
   }
   async selectProduct({ byName = false, productIdentifier }) {
