@@ -1,4 +1,8 @@
 const { test, expect } = require("@playwright/test");
+/**
+ * Class representing the Cart Page.
+ * Provides actions and verifications related to the cart page.
+ */
 export class cartPage {
   constructor(page) {
     this.page = page;
@@ -12,12 +16,17 @@ export class cartPage {
       `//div[@class='cart__items']/descendant::input[@id='Quantity-1']`
     );
     this.productPrice = page.locator(`//*[@id='main-cart-items']//td[5]//span`);
-    this.prooductSize=page.locator(`//div[@class='product-option']/descendant::dd[normalize-space(text()) and contains(text(), 'cm')]`)
-    this.deleteBtn=page.locator(`//*[@id='Remove-1']`)
-    this.cartEmptyText=page.locator(`//*[@class='cart__empty-text']`)
+    this.prooductSize = page.locator(
+      `//div[@class='product-option']/descendant::dd[normalize-space(text()) and contains(text(), 'cm')]`
+    );
+    this.deleteBtn = page.locator(`//*[@id='Remove-1']`);
+    this.cartEmptyText = page.locator(`//*[@class='cart__empty-text']`);
   }
 
-  // Verify the cart page is displayed
+  /**
+   * Verifies that the Cart page is displayed.
+   * Throws an error if the page is not visible within the specified timeout.
+   */
   async verifyCartPage() {
     try {
       await this.cartPageHeader.waitFor({ state: "visible", timeout: 5000 });
@@ -27,7 +36,10 @@ export class cartPage {
     }
   }
 
-  // Validate all items in the cart (name, size, quantity, price)
+  /**
+   * Validates the contents of the cart.
+   * Verifies product details such as name, quantity, price, and size.
+   */
   async validateCartContents(expectedProductDetails) {
     const cartItemsDetails = [];
 
@@ -41,14 +53,14 @@ export class cartPage {
       const itemName = await this.productName.nth(i).textContent();
       const itemQuantity = await this.productQuantity.nth(i).inputValue();
       const itemPrice = await this.productPrice.nth(i).textContent();
-      const itemSize=await this.prooductSize.nth(i).textContent()
+      const itemSize = await this.prooductSize.nth(i).textContent();
       cartItemsDetails.push({
         name: itemName.trim(),
         quantity: parseInt(itemQuantity.trim(), 10),
         price: itemPrice.trim(),
-        size:itemSize.trim().replace(/\D/g, '')
+        size: itemSize.trim().replace(/\D/g, ""),
       });
-
+      // Compare actual product details with expected details
       const expectedItem = expectedProductDetails[0];
       expect(itemName.trim()).toBe(expectedItem.name);
       expect(parseInt(itemQuantity.trim(), 10)).toBe(1);
@@ -58,10 +70,12 @@ export class cartPage {
 
     return cartItemsDetails;
   }
-async deleteProduct()
-{
-  await this.deleteBtn.click()
-  return this.cartEmptyText.textContent()
-}
-
+  /**
+   * Deletes a product from the cart.
+   * @returns - Confirmation message when the cart is empty.
+   */
+  async deleteProduct() {
+    await this.deleteBtn.click();
+    return this.cartEmptyText.textContent();
+  }
 }

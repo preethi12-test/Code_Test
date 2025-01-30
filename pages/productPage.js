@@ -5,6 +5,10 @@ const productData = JSON.parse(
     require("/Users/testvagrant/Desktop/CODE_TASK/testData/productData.json")
   )
 );
+/**
+ * Class representing the Products Page.
+ * Provides actions for interacting with products on the product listing page.
+ */
 export class productsPage {
   constructor(page) {
     this.page = page;
@@ -18,6 +22,9 @@ export class productsPage {
     this.productAddedNotification = page.locator(`//*[@id='cart-notification']//h2`);
     this.cartIcon = page.locator(`//*[@class='cart-count-bubble']//span[1]`);
   }
+  /**
+   * Selects a product based on the identifier, either by name or by index.
+   */
   async selectProduct({ byName = false, productIdentifier }) {
     let productLocator;
 
@@ -34,6 +41,10 @@ export class productsPage {
     await productLocator.click();
     await this.navigateToProductDetails();
   }
+  /**
+   * Verifies successful navigation to the product details page.
+   * Throws an error if the page is not visible within the specified timeout.
+   */
   async navigateToProductDetails() {
     try {
       await this.productDetails.waitFor({ state: "visible", timeout: 5000 });
@@ -42,6 +53,9 @@ export class productsPage {
       throw new Error("Failed to navigate to the product details page.");
     }
   }
+   /**
+   * Retrieves the product details (name, price, and size) from the UI.
+   */
   async getProductDetailsFromUI() {
     const productName = await this.productDetails.textContent();
     const productPrice = await this.productPrice.textContent();
@@ -55,6 +69,10 @@ export class productsPage {
   async getProductDetails() {
     return await this.productDetails.textContent();
   }
+  /**
+   * Checks the availability of the product before adding it to the cart.
+   * Throws an error if the product is sold out.
+   */
   async productAvailabilityCheck() {
     const productAvailabilityText = await this.addToCartBtn.textContent();
     if (productAvailabilityText.includes("Sold out")) {
@@ -63,10 +81,18 @@ export class productsPage {
     }
     console.log("Product is available.");
   }
+  /**
+   * Adds the product to the cart.
+   * @returns - The notification text confirming the product was added to the cart.
+   */
   async addingProductToCart() {
     await this.addToCartBtn.click();
     return await this.productAddedNotification.textContent();
   }
+  /**
+   * Retrieves the current item count in the cart.
+   * Updates the displayed cart count accordingly.
+   */
   async getCartCount() {
     const currentCountText = await this.cartIcon.textContent();
     console.log("Current Count Text: ", currentCountText);
