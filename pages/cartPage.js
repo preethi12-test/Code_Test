@@ -4,6 +4,10 @@ const { test, expect } = require("@playwright/test");
  * Provides actions and verifications related to the cart page.
  */
 export class cartPage {
+  /**
+   * Creates an instance of the Cart Page.
+   * @param {Page} page - The Playwright page object representing the browser tab.
+   */
   constructor(page) {
     this.page = page;
     this.cartItems = page.locator(`//*[@id='main-cart-items']`);
@@ -25,9 +29,9 @@ export class cartPage {
 
   /**
    * Verifies that the Cart page is displayed.
-   * Throws an error if the page is not visible within the specified timeout.
+   * @throws {Error} Throws an error if the cart page is not visible within the specified timeout.
    */
-  async verifyCartPage() {
+  async verifyCartPageIsVisible() {
     try {
       await this.cartPageHeader.waitFor({ state: "visible", timeout: 5000 });
       console.log("Cart page is displayed.");
@@ -38,7 +42,9 @@ export class cartPage {
 
   /**
    * Validates the contents of the cart.
-   * Verifies product details such as name, quantity, price, and size.
+   * @param {Array} expectedProductDetails - Expected product details to validate against.
+   * @returns {Array} An array of actual product details present in the cart.
+   * @throws {Error} Throws an error if no items are found in the cart.
    */
   async validateCartContents(expectedProductDetails) {
     const cartItemsDetails = [];
@@ -70,11 +76,11 @@ export class cartPage {
 
     return cartItemsDetails;
   }
-  /**
+ /**
    * Deletes a product from the cart.
-   * @returns - Confirmation message when the cart is empty.
+   * @returns {string} A confirmation message indicating the cart is empty.
    */
-  async deleteProduct() {
+  async removeProductFromCart() {
     await this.deleteBtn.click();
     return this.cartEmptyText.textContent();
   }
