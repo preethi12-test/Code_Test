@@ -16,13 +16,11 @@ export class cartPage {
       "//div[@class='title-wrapper-with-link']//h1"
     );
     this.productName = page.locator(`//*[@id='main-cart-items']//td[2]//a`);
-    this.productQuantity = page.locator(
-      `//div[@class='cart__items']/descendant::input[@id='Quantity-1']`
+    this.productQuantity = page.locator(`#Quantity-1`
+      // `//div[@class='cart__items']/descendant::input[@id='Quantity-1']`
     );
     this.productPrice = page.locator(`//*[@id='main-cart-items']//td[5]//span`);
-    this.prooductSize = page.locator(
-      `//div[@class='product-option']/descendant::dd[normalize-space(text()) and contains(text(), 'cm')]`
-    );
+    this.productSize = page.locator(`//div[@class='product-option']//dd`);
     this.deleteBtn = page.locator(`//*[@id='Remove-1']`);
     this.cartEmptyText = page.locator(`//*[@class='cart__empty-text']`);
   }
@@ -59,12 +57,12 @@ export class cartPage {
       const itemName = await this.productName.nth(i).textContent();
       const itemQuantity = await this.productQuantity.nth(i).inputValue();
       const itemPrice = await this.productPrice.nth(i).textContent();
-      const itemSize = await this.prooductSize.nth(i).textContent();
+      const itemSize = await this.productSize.nth(i).textContent();
       cartItemsDetails.push({
         name: itemName.trim(),
         quantity: parseInt(itemQuantity.trim(), 10),
         price: itemPrice.trim(),
-        size: itemSize.trim().replace(/\D/g, ""),
+        size: itemSize.trim(),
       });
       // Compare actual product details with expected details
       const expectedItem = expectedProductDetails[0];

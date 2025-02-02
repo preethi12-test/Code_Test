@@ -17,7 +17,7 @@ test("Login", async ({ page }) => {
   const CartPage = new cartPage(page);
 
   // Navigate to the login page
-  await LoginPage.goTo();
+  await LoginPage.navigateToLoginPage();
 
   // Select product by index
   await ProductsPage.selectProduct({ byName: false, productIdentifier: 3 });
@@ -31,14 +31,14 @@ test("Login", async ({ page }) => {
 
       // Check if the product is available before adding it to the cart
   try {
-    await ProductsPage.productAvailabilityCheck();
+    await ProductsPage.checkProductAvailability();
   } catch (error) {
     console.log("Test aborted: " + error.message);
     return;
   }
 
   // Add the product to the cart and retrieve the notification text
-  const productAddedNotificationText = await ProductsPage.addingProductToCart();
+  const productAddedNotificationText = ProductsPage.addToCart();
   const productDetailText = await ProductsPage.getProductDetails();
 
   // Validate that the product was successfully added to the cart
@@ -46,7 +46,7 @@ test("Login", async ({ page }) => {
   expect(productDetailText).toBeDefined();
 
   // Validate the updated cart count
-  await ProductsPage.getCartCount();
+  await ProductsPage.getCartItemCount();
   const updatedCartCountText = await ProductsPage.cartIcon.textContent();
   expect(updatedCartCountText).toContain("1 item");
 
@@ -54,7 +54,7 @@ test("Login", async ({ page }) => {
   await ProductsPage.page.locator(`//a[@id='cart-icon-bubble']`).click();
 
   // Verify cart page is displayed
-  await CartPage.verifyCartPage();
+  await CartPage.verifyCartPageIsVisible;
 
   // Set up the expected product details for cart validation
   const expectedProductDetails = [
@@ -69,6 +69,6 @@ test("Login", async ({ page }) => {
   await CartPage.validateCartContents(expectedProductDetails);
   
    // Delete the product from the cart and confirm the cart is empty
-  const cartEmptyConfirmation=await CartPage.deleteProduct()
+  const cartEmptyConfirmation=await CartPage.removeProductFromCart()
   expect(cartEmptyConfirmation).toBeDefined()
 });

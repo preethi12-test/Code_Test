@@ -10,17 +10,13 @@ const productData = JSON.parse(
  * Provides actions for interacting with products on the product listing page.
  */
 export class productsPage {
-  /**
-   * Creates an instance of the Products Page.
-   * @param {Page} page - The Playwright page object representing the browser tab.
-   */
   constructor(page) {
     this.page = page;
     this.productDetails = page.locator(
       `//*[@id='ProductInfo-template--15328405717213__main']//h1`
     );
     this.productPrice = page.locator(`//span[@class='price-item price-item--regular']`)
-    this.productSize=page.locator(`//label[@for='template--15328405717213__main-Size-0']`)
+    this.productSize=page.locator(`//label[contains(@for, 'template--15328405717213__main-')]`)
     this.productAvailability = page.locator(`//span[@class='badge price__badge-sold-out color-inverse']`);
     this.addToCartBtn = page.locator(`//*[@name='add']`);
     this.productAddedNotification = page.locator(`//*[@id='cart-notification']//h2`);
@@ -28,9 +24,6 @@ export class productsPage {
   }
   /**
    * Selects a product based on the identifier, either by name or by index.
-   * @param {Object} options - The options for selecting the product.
-   * @param {boolean} options.byName - If true, selects by product name; if false, selects by index.
-   * @param {string|number} options.productIdentifier - The product identifier (name or index).
    */
   async selectProduct({ byName = false, productIdentifier }) {
     let productLocator;
@@ -46,11 +39,11 @@ export class productsPage {
     }
 
     await productLocator.click();
-    await this.navigateToProductDetails();
+    await this.navigateToProductDetailsPage();
   }
   /**
    * Verifies successful navigation to the product details page.
-   * @throws {Error} Throws an error if the product details page is not visible within the specified timeout.
+   * Throws an error if the page is not visible within the specified timeout.
    */
   async navigateToProductDetailsPage() {
     try {
@@ -62,7 +55,6 @@ export class productsPage {
   }
    /**
    * Retrieves the product details (name, price, and size) from the UI.
-   * @returns {Object} - The product details, including name, price, and size.
    */
   async getProductDetailsFromUI() {
     const productName = await this.productDetails.textContent();
@@ -77,9 +69,9 @@ export class productsPage {
   async getProductDetails() {
     return await this.productDetails.textContent();
   }
- /**
-   * Checks if the product is available before adding it to the cart.
-   * @throws {Error} Throws an error if the product is sold out.
+  /**
+   * Checks the availability of the product before adding it to the cart.
+   * Throws an error if the product is sold out.
    */
   async checkProductAvailability() {
     const productAvailabilityText = await this.addToCartBtn.textContent();
@@ -91,7 +83,7 @@ export class productsPage {
   }
   /**
    * Adds the product to the cart.
-   * @returns {string} - The notification text confirming the product was added to the cart.
+   * @returns - The notification text confirming the product was added to the cart.
    */
   async addToCart() {
     await this.addToCartBtn.click();
