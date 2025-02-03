@@ -105,24 +105,24 @@
               "projectName": "chromium",
               "results": [
                 {
-                  "workerIndex": 2,
+                  "workerIndex": 4,
                   "status": "passed",
-                  "duration": 2956,
+                  "duration": 1805,
                   "errors": [],
                   "stdout": [
                     {
                       "text": "Successfully navigated to the product details page.\n"
                     },
                     {
-                      "text": "Product is available.\n"
+                      "text": "Product is sold out, stopping all tests.\n"
                     },
                     {
-                      "text": "Current Count Text:  1\n"
+                      "text": "Test aborted: Product is sold out. Test aborted.\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-02-03T05:16:14.128Z",
+                  "startTime": "2025-02-03T09:12:26.246Z",
                   "attachments": []
                 }
               ],
@@ -139,8 +139,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-02-03T05:16:12.779Z",
-    "duration": 4565.836000002921,
+    "startTime": "2025-02-03T09:12:23.900Z",
+    "duration": 4654.128999993205,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,

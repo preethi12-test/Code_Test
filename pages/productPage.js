@@ -81,7 +81,7 @@ export class productsPage {
    * Throws an error if the product is sold out.
    */
   async checkProductAvailability() {
-    const productAvailabilityText = await this.addToCartBtn.textContent();
+    const productAvailabilityText = await this.productAvailability.textContent();
     if (productAvailabilityText.includes("Sold out")) {
       console.log("Product is sold out, stopping all tests.");
       throw new Error("Product is sold out. Test aborted.");
@@ -93,8 +93,32 @@ export class productsPage {
    * @returns - The notification text confirming the product was added to the cart.
    */
   async addToCart() {
-    await this.addToCartBtn.click();
-    return await this.productAddedNotification.textContent();
+    try {
+      await this.checkProductAvailability();
+    } catch (error) {
+      console.error("Cannot add product to cart due to availability issue.");
+      throw error;
+    }
+
+    // Attempt to click the "Add to Cart" button
+    try {
+      console.log("Attempting to add product to cart...");
+      await this.addToCartBtn.click();
+    } catch (error) {
+      console.error("Error occurred while clicking 'Add to Cart' button: ", error);
+      throw new Error("Failed to add product to the cart. Please try again later.");
+    }
+     // Check if the product was successfully added to the cart
+     try {
+      const notificationText = await this.productAddedNotification.textContent();
+      if (!notificationText || notificationText.trim() === "") {
+        throw new Error("No confirmation received for adding the product to the cart.");
+      }
+      return notificationText;
+    } catch (error) {
+      console.error("Error retrieving notification text: ", error.message);
+      throw new Error("Failed to retrieve cart addition confirmation.");
+    }
   }
   /**
    * Retrieves the current item count in the cart.

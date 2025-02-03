@@ -27,7 +27,8 @@ export class cartPage {
 
   /**
    * Verifies that the Cart page is displayed.
-   * @throws {Error} Throws an error if the cart page is not visible within the specified timeout.
+   * Throws an error if the cart page is not visible within the specified timeout.
+   * @throws {Error} Throws an error if the cart page is not visible.
    */
   async verifyCartPageIsVisible() {
     try {
