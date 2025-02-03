@@ -38,7 +38,7 @@ test("Login", async ({ page }) => {
   }
 
   // Add the product to the cart and retrieve the notification text
-  const productAddedNotificationText = ProductsPage.addToCart();
+  const productAddedNotificationText = await ProductsPage.addToCart();
   const productDetailText = await ProductsPage.getProductDetails();
 
   // Validate that the product was successfully added to the cart

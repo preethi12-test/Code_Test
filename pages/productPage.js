@@ -10,6 +10,10 @@ const productData = JSON.parse(
  * Provides actions for interacting with products on the product listing page.
  */
 export class productsPage {
+  /**
+   * Creates an instance of the Products Page.
+   * @param {Page} page - The Playwright page object representing the browser tab.
+   */
   constructor(page) {
     this.page = page;
     this.productDetails = page.locator(
@@ -24,6 +28,9 @@ export class productsPage {
   }
   /**
    * Selects a product based on the identifier, either by name or by index.
+   * @param {Object} params - The parameters to identify the product.
+   * @param {boolean} params.byName - Flag indicating whether to select by name or index.
+   * @param {string|number} params.productIdentifier - The product name or index.
    */
   async selectProduct({ byName = false, productIdentifier }) {
     let productLocator;
@@ -91,7 +98,7 @@ export class productsPage {
   }
   /**
    * Retrieves the current item count in the cart.
-   * Updates the displayed cart count accordingly.
+   * @returns {number} The current count of items in the cart.
    */
   async getCartItemCount() {
     const currentCountText = await this.cartIcon.textContent();
