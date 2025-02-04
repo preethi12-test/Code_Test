@@ -5,15 +5,7 @@ const productData = JSON.parse(
     require("/Users/testvagrant/Desktop/CODE_TASK/testData/productData.json")
   )
 );
-/**
- * Class representing the Products Page.
- * Provides actions for interacting with products on the product listing page.
- */
 export class productsPage {
-  /**
-   * Creates an instance of the Products Page.
-   * @param {Page} page - The Playwright page object representing the browser tab.
-   */
   constructor(page) {
     this.page = page;
     this.productDetails = page.locator(
@@ -26,12 +18,6 @@ export class productsPage {
     this.productAddedNotification = page.locator(`//*[@id='cart-notification']//h2`);
     this.cartIcon = page.locator(`//*[@class='cart-count-bubble']//span[1]`);
   }
-  /**
-   * Selects a product based on the identifier, either by name or by index.
-   * @param {Object} params - The parameters to identify the product.
-   * @param {boolean} params.byName - Flag indicating whether to select by name or index.
-   * @param {string|number} params.productIdentifier - The product name or index.
-   */
   async selectProduct({ byName = false, productIdentifier }) {
     let productLocator;
 
@@ -48,10 +34,6 @@ export class productsPage {
     await productLocator.click();
     await this.navigateToProductDetailsPage();
   }
-  /**
-   * Verifies successful navigation to the product details page.
-   * Throws an error if the page is not visible within the specified timeout.
-   */
   async navigateToProductDetailsPage() {
     try {
       await this.productDetails.waitFor({ state: "visible", timeout: 5000 });
@@ -60,9 +42,6 @@ export class productsPage {
       throw new Error("Failed to navigate to the product details page.");
     }
   }
-   /**
-   * Retrieves the product details (name, price, and size) from the UI.
-   */
   async getProductDetailsFromUI() {
     const productName = await this.productDetails.textContent();
     const productPrice = await this.productPrice.textContent();
@@ -76,10 +55,6 @@ export class productsPage {
   async getProductDetails() {
     return await this.productDetails.textContent();
   }
-  /**
-   * Checks the availability of the product before adding it to the cart.
-   * Throws an error if the product is sold out.
-   */
   async checkProductAvailability() {
     const productAvailabilityText = await this.productAvailability.textContent();
     if (productAvailabilityText.includes("Sold out")) {
@@ -88,10 +63,6 @@ export class productsPage {
     }
     console.log("Product is available.");
   }
-  /**
-   * Adds the product to the cart.
-   * @returns - The notification text confirming the product was added to the cart.
-   */
   async addToCart() {
     try {
       await this.checkProductAvailability();
@@ -99,8 +70,6 @@ export class productsPage {
       console.error("Cannot add product to cart due to availability issue.");
       throw error;
     }
-
-    // Attempt to click the "Add to Cart" button
     try {
       console.log("Attempting to add product to cart...");
       await this.addToCartBtn.click();
@@ -108,7 +77,6 @@ export class productsPage {
       console.error("Error occurred while clicking 'Add to Cart' button: ", error);
       throw new Error("Failed to add product to the cart. Please try again later.");
     }
-     // Check if the product was successfully added to the cart
      try {
       const notificationText = await this.productAddedNotification.textContent();
       if (!notificationText || notificationText.trim() === "") {
@@ -120,10 +88,7 @@ export class productsPage {
       throw new Error("Failed to retrieve cart addition confirmation.");
     }
   }
-  /**
-   * Retrieves the current item count in the cart.
-   * @returns {number} The current count of items in the cart.
-   */
+
   async getCartItemCount() {
     const currentCountText = await this.cartIcon.textContent();
     console.log("Current Count Text: ", currentCountText);
